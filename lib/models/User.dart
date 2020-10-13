@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class User {
   int id;
-  final String name;
+  String name;
   String email;
   String password;
   String role;

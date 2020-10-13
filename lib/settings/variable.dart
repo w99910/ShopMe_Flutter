@@ -6,6 +6,8 @@ Color soft_pink = Hexcolor('#F1EEF9');
 Color cello = Hexcolor('#28385e');
 Color alert = Hexcolor('#FFAE33');
 Color cello_600 = Hexcolor('#243255');
+Color light_Green = Hexcolor('#78b0a0');
+Color green_200 = Hexcolor('#709078');
 
 class BuildText extends StatelessWidget {
   final String text;
@@ -41,5 +43,18 @@ class DeviceInfo {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
     return androidInfo.model;
+  }
+}
+
+class Provide extends ChangeNotifier {
+  bool isLoading = false;
+  bool get loading => isLoading;
+  set loading(bool val) {
+    isLoading = val;
+    notifyListeners();
+  }
+
+  toggle() {
+    isLoading = !isLoading;
   }
 }

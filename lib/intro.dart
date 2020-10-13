@@ -5,6 +5,7 @@ import 'package:ShopMe/settings/variable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Home.dart';
@@ -23,32 +24,25 @@ class _IntroAppState extends State<IntroApp> {
   @override
   void initState() {
     super.initState();
-  }
-
-  void _checkuser() async {
-    SharedPreferences storage = await SharedPreferences.getInstance();
-    // await storage.remove('user');
-    Map userMap = jsonDecode(storage.getString('user'));
-    var user = User.fromJson(userMap);
-
-    if (user != null) {
-      setState(() {
-        redirectPage = Home(user);
-      });
-    }
+    _checking();
   }
 
   _checking() async {
     SharedPreferences storage = await SharedPreferences.getInstance();
 
-    Map userMap = jsonDecode(storage.getString('user'));
-    var user = User.fromJson(userMap);
+    var storedUser = storage.getString('user');
 
-    if (user != null) {
-      // redirectPage = Home(user);
-      setState(() {
-        redirectPage = Home(user);
-      });
+    if (storedUser != null) {
+      Map userMap = await jsonDecode(storage.getString('user'));
+      var user = User.fromJson(userMap);
+      bool isRemember = await storage.getBool('remember');
+      print(user);
+      if (isRemember != null) {
+        // redirectPage = Home(user);
+        setState(() {
+          redirectPage = Home(user);
+        });
+      }
     }
   }
 
@@ -88,15 +82,17 @@ class _IntroPageState extends State<IntroPage> {
             horizontal: width * 0.02, vertical: height * 0.1),
         child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text('ShopMe',
-                  style: GoogleFonts.dancingScript(
-                    textStyle: TextStyle(fontSize: 50),
-                  )),
+              // Text('ShopMe',
+              //     style: GoogleFonts.dancingScript(
+              //       textStyle: TextStyle(fontSize: 50),
+              //     )),
               Container(
-                height: height * 0.3,
+                height: height * 0.34,
                 margin: EdgeInsets.only(top: height * 0.05),
-                width: width,
+                width: double.infinity,
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage('lib/assets/images/welcome_.png'),
